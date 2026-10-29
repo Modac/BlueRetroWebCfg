@@ -149,8 +149,9 @@ export function btConn() {
     .then(value => {
         app_ver = value;
         let app_ver_is_18x = (app_ver.indexOf('v1.8') != -1);
-        let app_ver_bogus = (app_ver.indexOf('v') == -1);
-        if (app_ver_is_18x || app_ver_bogus) {
+        // Local builds without version.txt report a bare git hash, still ask
+        // FW name, older FW not supporting the cmd won't report 'hw2' anyway.
+        if (app_ver_is_18x) {
             return '';
         }
         else {
