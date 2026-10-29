@@ -1,0 +1,65 @@
+---
+feature_name: BlueRetro Port LEDs
+icon_url: icon.png
+index: index.html
+---
+
+{% include_relative _includes/intro.html %}
+
+<p align="center"><a href="https://blueretro.com/products/brx"><img src="brx_banner.png"/></a></p><br>
+
+Configure WS2812 status LEDs, one per controller port, chained on a single GPIO.<br>
+Only available on BlueRetro HW2 N64 and GameCube. Changes are previewed live, press <b>Save</b> to keep them after a reboot.<br><br>
+
+<div id="divBtConn">
+    <button id="btConn">Connect BlueRetro</button><br>
+</div>
+<div id="divInfo" style="display:none;margin-bottom:1em;"></div>
+<div id="divPortLed" style="display:none;">
+    <p>
+        <label><input type="checkbox" id="ledEnable"> Enable port LEDs</label>
+    </p>
+    <p>
+        <label>Data GPIO
+            <select id="ledGpio">
+                <option value="18">GPIO18</option>
+                <option value="21">GPIO21</option>
+                <option value="22">GPIO22</option>
+                <option value="23">GPIO23</option>
+                <option value="25">GPIO25</option>
+            </select>
+        </label>
+    </p>
+
+    <h3>Chain order</h3>
+    <p>
+        <button id="btnIdentify">Identify chain order</button><br>
+        <small><i>For 10 seconds the 1st LED of the chain lights red, the 2nd green, the 3rd blue and the 4th yellow.
+        Then select for each port the color it showed.</i></small>
+    </p>
+    <table id="tableChain"></table>
+
+    <h3>Colors</h3>
+    <table id="tableColor"></table>
+
+    <p>
+        <button id="btnSave">Save</button>
+        <button id="btnDefault">Load defaults</button>
+    </p>
+</div>
+
+{% include output_helper.html %}
+
+<script type="module">
+  import { btConn, initPortLedDom } from './port_led.js';
+
+  initPortLedDom();
+  document.getElementById("btConn").addEventListener('click', function() {
+    if (isWebBluetoothEnabled()) {
+      ChromeSamples.clearLog();
+      btConn();
+    }
+  });
+</script>
+
+{% include_relative _includes/utils.html %}
